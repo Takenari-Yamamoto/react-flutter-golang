@@ -1,32 +1,59 @@
 .container {
-  padding: 16px;
-}
-
-.todoContainer {
-  gap: 50%;
+  /* padding: 16px; */
   display: flex;
-}
-
-.title {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.add {
-  height: 40px;
-  display: flex;
-  gap: 12px;
   width: 100%;
 }
 
+.sideBar {
+  width: 15%;
+  height: 100vh;
+  background-color: rgb(234, 230, 230);
+}
+
+.todoListContainer {
+  padding: 20px;
+  display: flex;
+  width: 100%;
+}
+
+.list {
+  width: 60%;
+}
+
+.detail {
+  width: 40%;
+}
+
+/* 詳細 */
+.todoItem {
+  display: flex;
+  padding: 8px 0;
+  border-bottom: 1px solid rgb(232, 232, 232);
+}
+
+.checkBox {
+  width: 32px;
+  border-bottom: 1px solid rgb(232, 232, 232);
+}
+
+/* 追加ボタン */
+.add {
+  width: 100%;
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  height: 64px;
+}
+
 .input {
-  border: 1px solid rgb(201, 201, 201);
+  width: 90%;
+  border: 1px solid rgb(186, 186, 186);
   border-radius: 4px;
-  width: 70%;
 }
 
 .addButton {
-  background-color: rgb(107, 194, 252);
+  width: 30%;
   color: white;
+  background-color: rgb(41, 198, 255);
   border-radius: 4px;
 }

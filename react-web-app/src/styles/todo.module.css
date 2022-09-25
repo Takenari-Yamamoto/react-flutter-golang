@@ -18,10 +18,13 @@
 
 .list {
   width: 60%;
+  padding: 12px;
 }
 
 .detail {
+  border-left: 1px solid rgb(206, 206, 206);
   width: 40%;
+  padding: 16px;
 }
 
 /* 詳細 */
@@ -56,4 +59,8 @@
   color: white;
   background-color: rgb(41, 198, 255);
   border-radius: 4px;
+}
+
+/* 詳細 */
+.detail_title {
 }

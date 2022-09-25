@@ -2,7 +2,11 @@ import React, { memo } from 'react';
 import style from '../../styles/todo.module.css';
 import checkBoxStyle from '../../styles/checkBox.module.css';
 
-const Item = () => {
+type Props = {
+  title: string;
+};
+
+const Item = ({ title }: Props) => {
   return (
     <div className={style.todoItem}>
       <label className={checkBoxStyle.ECM_CheckboxInput}>
@@ -12,7 +16,7 @@ const Item = () => {
         />
         <span className={checkBoxStyle.ECM_CheckboxInput_DummyInput}></span>
         <span className={checkBoxStyle.ECM_CheckboxInput_LabelText}>
-          ご飯作る
+          {title}
         </span>
       </label>
     </div>

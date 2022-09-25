@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
-const TodoItem = () => {
+const Item = () => {
   return <div>Todo</div>;
 };
 
-export default memo(TodoItem);
+export default memo(Item);

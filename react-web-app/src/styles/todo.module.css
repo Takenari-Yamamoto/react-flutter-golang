@@ -1,0 +1,32 @@
+.container {
+  padding: 16px;
+}
+
+.todoContainer {
+  gap: 50%;
+  display: flex;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.add {
+  height: 40px;
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.input {
+  border: 1px solid rgb(201, 201, 201);
+  border-radius: 4px;
+  width: 70%;
+}
+
+.addButton {
+  background-color: rgb(107, 194, 252);
+  color: white;
+  border-radius: 4px;
+}

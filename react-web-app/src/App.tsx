@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { TodoRepo } from './api/todoRepo';
 import Header from './components/common/Header';
 import Add from './components/todo/Add';
@@ -9,12 +9,11 @@ import style from './styles/todo.module.css';
 
 function App() {
   const [todoList, setTodoList] = useState<Todo[]>([]);
-  const [selected, setSelectedTodo] = useState<Todo>({
-    id: 'a',
-    title: 'a',
-    detail: 'a',
-    createdAt: 'a',
-  });
+  const [selected, setSelectedTodo] = useState<Todo | null>(null);
+  const handleSelect = useCallback((item: Todo) => {
+    console.log(item);
+    setSelectedTodo(item);
+  }, []);
   const { fetchTodo } = TodoRepo();
   useEffect(() => {
     const fetch = async () => {
@@ -38,7 +37,13 @@ function App() {
             <Add />
             <h1>Todo Lists</h1>
             {todoList.map((todo, index) => {
-              return <Item title={todo.title} key={index.toString()} />;
+              return (
+                <Item
+                  title={todo.title}
+                  onClick={() => handleSelect(todo)}
+                  key={index.toString()}
+                />
+              );
             })}
           </div>
           <div className={style.detail}>

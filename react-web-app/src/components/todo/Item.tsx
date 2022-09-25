@@ -4,11 +4,12 @@ import checkBoxStyle from '../../styles/checkBox.module.css';
 
 type Props = {
   title: string;
+  onClick: () => void;
 };
 
-const Item = ({ title }: Props) => {
+const Item = ({ title, onClick }: Props) => {
   return (
-    <div className={style.todoItem}>
+    <div className={style.todoItem} onClick={onClick}>
       <label className={checkBoxStyle.ECM_CheckboxInput}>
         <input
           className={checkBoxStyle.ECM_CheckboxInput_Input}

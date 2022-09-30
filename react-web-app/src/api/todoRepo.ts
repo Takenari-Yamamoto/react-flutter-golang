@@ -1,37 +1,34 @@
 import { Todo } from '../model/Todo';
 
 interface TodoApi {
-  createTodo: (title: string) => Promise<void>;
-  fetchTodo: () => Promise<Todo[]>;
+  create: (title: string) => Promise<void>;
+  getAll: () => Promise<Todo[]>;
 }
 
-export const TodoRepo = (): TodoApi => {
-  const createTodo = async (title: string) => {
+export const todoRepo: TodoApi = {
+  create: async () => {
     await fetch('');
-  };
-
-  const fetchTodo = async (): Promise<Todo[]> => {
+  },
+  getAll: async () => {
     return [
       {
-        id: 'dsjfsdf',
+        id: 'ddhyrgthrghdf',
         title: 'ご飯',
         detail: '美味しいもの',
         createdAt: new Date(),
       },
       {
-        id: 'dsjfsdf',
+        id: '34534534dsjfeyetyteyesdf',
         title: '酒',
-        detail: '美味しいもの',
+        detail: 'ハイボールかな〜',
         createdAt: new Date(),
       },
       {
-        id: 'dsjfsdf',
+        id: 'trtwrtg45345tf',
         title: 'ラーメン食べる',
-        detail: '美味しいもの',
+        detail: '豚骨がいいね',
         createdAt: new Date(),
       },
     ];
-  };
-
-  return { createTodo, fetchTodo };
+  },
 };

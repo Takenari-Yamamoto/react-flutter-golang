@@ -37,6 +37,15 @@ class _MyHomePageState extends State<MyHomePage> {
     {'title': 'お酒のむ', 'isChecked': false},
   ];
 
+  String _text = "";
+  void _handleInput(String e) {
+    print('入力された-->>>');
+    print(e);
+    setState(() {
+      _text = e;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,11 +91,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   return Padding(
                     padding: const EdgeInsets.all(20),
                     child: Row(children: [
-                      const Flexible(
+                      Flexible(
                           child: TextField(
-                        decoration: InputDecoration(border: InputBorder.none),
+                        decoration:
+                            const InputDecoration(border: InputBorder.none),
+                        onChanged: (String text) {
+                          print(text);
+                          _handleInput;
+                        },
                       )),
-                      TextButton(onPressed: () => {}, child: const Text('追加'))
+                      TextButton(
+                          onPressed: () {
+                            print('追加');
+                          },
+                          child: const Text('追加'))
                     ]),
                   );
                 })

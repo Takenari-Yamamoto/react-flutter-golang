@@ -29,7 +29,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static const todoList = ['tennis', 'ラーメン食べる', 'Flutter 極める'];
+  static const todoList = [
+    {'title': 'tennis', 'isChecked': false},
+    {'title': 'ラーメン', 'isChecked': false},
+    {'title': '餃子つくる', 'isChecked': false},
+    {'title': 'Flutter極める', 'isChecked': false},
+    {'title': 'お酒のむ', 'isChecked': false},
+  ];
   bool _isChecked = false;
 
   @override
@@ -41,10 +47,10 @@ class _MyHomePageState extends State<MyHomePage> {
           centerTitle: false,
           backgroundColor: Colors.white,
         ),
-        body: Column(children: [
-          for (var i = 0; i < 20; i++)
+        body: ListView(children: [
+          for (final todo in todoList)
             CheckboxListTile(
-              title: const Text('Animate Slowly'),
+              title: const Text('todo'),
               value: _isChecked,
               controlAffinity: ListTileControlAffinity.leading,
               onChanged: (value) {

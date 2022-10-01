@@ -30,7 +30,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Map<String, dynamic>> todoList = [
-    {'title': 'tennis', 'isChecked': false},
+    {'title': 'tennidds', 'isChecked': false},
     {'title': 'ラーメン', 'isChecked': false},
     {'title': '餃子つくる', 'isChecked': false},
     {'title': 'Flutter極める', 'isChecked': false},
@@ -75,7 +75,22 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
-          onPressed: () => print("クリックされました"),
+          onPressed: () => {
+            showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Row(children: [
+                      const Flexible(
+                          child: TextField(
+                        decoration: InputDecoration(border: InputBorder.none),
+                      )),
+                      TextButton(onPressed: () => {}, child: const Text('追加'))
+                    ]),
+                  );
+                })
+          },
           tooltip: 'Create',
           backgroundColor: Colors.white,
           child: const Icon(

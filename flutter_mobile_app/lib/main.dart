@@ -29,14 +29,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static const todoList = [
+  final List<Map<String, dynamic>> todoList = [
     {'title': 'tennis', 'isChecked': false},
     {'title': 'ラーメン', 'isChecked': false},
     {'title': '餃子つくる', 'isChecked': false},
     {'title': 'Flutter極める', 'isChecked': false},
     {'title': 'お酒のむ', 'isChecked': false},
   ];
-  bool _isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -47,28 +46,28 @@ class _MyHomePageState extends State<MyHomePage> {
           centerTitle: false,
           backgroundColor: Colors.white,
         ),
-        body: ListView(children: [
-          for (final todo in todoList)
-            CheckboxListTile(
-              title: const Text('todo'),
-              value: _isChecked,
-              controlAffinity: ListTileControlAffinity.leading,
-              onChanged: (value) {
-                setState(() {
-                  _isChecked = value!;
+        body: ListView.builder(
+          itemCount: todoList.length,
+          itemBuilder: (context, i) {
+            return CheckboxListTile(
+                title: Text(todoList[i]['title']),
+                value: todoList[i]['isChecked'],
+                onChanged: (value) {
+                  setState(() {
+                    todoList[i]['isChecked'] = !todoList[i]['isChecked'];
+                  });
                 });
-              },
-            ),
-        ]),
+          },
+        ),
         bottomNavigationBar: BottomAppBar(
           color: Colors.white,
-          shape: CircularNotchedRectangle(),
+          shape: const CircularNotchedRectangle(),
           child: Padding(
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               child: Row(
                 children: [
                   IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
-                  Spacer(),
+                  const Spacer(),
                   IconButton(
                       onPressed: () {}, icon: const Icon(Icons.more_horiz)),
                 ],

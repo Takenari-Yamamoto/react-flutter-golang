@@ -86,18 +86,20 @@ class _MyHomePageState extends State<MyHomePage> {
         floatingActionButton: FloatingActionButton(
           onPressed: () => {
             showModalBottomSheet(
+                isScrollControlled: true,
                 context: context,
                 builder: (BuildContext context) {
                   return Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                    ),
                     child: Row(children: [
                       Flexible(
                           child: TextField(
                         decoration:
                             const InputDecoration(border: InputBorder.none),
                         onChanged: (String text) {
-                          print(text);
-                          _handleInput;
+                          _handleInput(text);
                         },
                       )),
                       TextButton(

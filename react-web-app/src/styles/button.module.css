@@ -1,0 +1,11 @@
+.button {
+  width: 30%;
+  color: white;
+  background-color: rgb(41, 198, 255);
+  border-radius: 4px;
+  position: absolute;
+  bottom: 0;
+  width: max-content;
+  padding: 12px;
+  right: 10px;
+}

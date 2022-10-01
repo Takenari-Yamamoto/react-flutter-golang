@@ -29,20 +29,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Map<String, dynamic>> todoList = [
-    {'title': 'tennidds', 'isChecked': false},
-    {'title': 'ラーメン', 'isChecked': false},
-    {'title': '餃子つくる', 'isChecked': false},
-    {'title': 'Flutter極める', 'isChecked': false},
-    {'title': 'お酒のむ', 'isChecked': false},
-  ];
-
   String _text = "";
+  final List<Map<String, dynamic>> _todoList = [];
+
   void _handleInput(String e) {
-    print('入力された-->>>');
-    print(e);
     setState(() {
       _text = e;
+    });
+  }
+
+  void _addTodo(String e) {
+    setState(() {
+      _todoList.add({'title': e, 'isChecked': false});
     });
   }
 
@@ -56,14 +54,18 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Colors.white,
         ),
         body: ListView.builder(
-          itemCount: todoList.length,
+          itemCount: _todoList.length,
           itemBuilder: (context, i) {
             return CheckboxListTile(
-                title: Text(todoList[i]['title']),
-                value: todoList[i]['isChecked'],
+                title: Text(_todoList[i]['title'],
+                    style: TextStyle(
+                        decoration: _todoList[i]['isChecked']
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none)),
+                value: _todoList[i]['isChecked'],
                 onChanged: (value) {
                   setState(() {
-                    todoList[i]['isChecked'] = !todoList[i]['isChecked'];
+                    _todoList[i]['isChecked'] = !_todoList[i]['isChecked'];
                   });
                 });
           },
@@ -104,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       )),
                       TextButton(
                           onPressed: () {
-                            print('追加');
+                            _addTodo(_text);
                           },
                           child: const Text('追加'))
                     ]),

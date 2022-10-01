@@ -41,9 +41,19 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Center(
           child: Column(),
         ),
-        bottomNavigationBar: const BottomAppBar(
+        bottomNavigationBar: BottomAppBar(
           color: Colors.white,
-          child: Padding(padding: EdgeInsets.all(15), child: Text('BOTTOM')),
+          shape: CircularNotchedRectangle(),
+          child: Padding(
+              padding: EdgeInsets.all(15),
+              child: Row(
+                children: [
+                  IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
+                  Spacer(),
+                  IconButton(
+                      onPressed: () {}, icon: const Icon(Icons.more_horiz)),
+                ],
+              )),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(

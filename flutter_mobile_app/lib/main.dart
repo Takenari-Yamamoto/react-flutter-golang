@@ -29,6 +29,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  static const todoList = ['tennis', 'ラーメン食べる', 'Flutter 極める'];
+  bool _isChecked = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,9 +41,19 @@ class _MyHomePageState extends State<MyHomePage> {
           centerTitle: false,
           backgroundColor: Colors.white,
         ),
-        body: Center(
-          child: Column(),
-        ),
+        body: Column(children: [
+          for (var i = 0; i < 20; i++)
+            CheckboxListTile(
+              title: const Text('Animate Slowly'),
+              value: _isChecked,
+              controlAffinity: ListTileControlAffinity.leading,
+              onChanged: (value) {
+                setState(() {
+                  _isChecked = value!;
+                });
+              },
+            ),
+        ]),
         bottomNavigationBar: BottomAppBar(
           color: Colors.white,
           shape: CircularNotchedRectangle(),

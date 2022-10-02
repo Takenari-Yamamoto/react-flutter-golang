@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_app/detail_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,7 +41,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _addTodo(String e) {
     setState(() {
-      _todoList.add({'title': e, 'isChecked': false});
+      _todoList.add({
+        'id': 'id4524werwe',
+        'title': e,
+        'createdAt': DateTime.now(),
+        'isChecked': false
+      });
     });
   }
 
@@ -57,12 +63,26 @@ class _MyHomePageState extends State<MyHomePage> {
           itemCount: _todoList.length,
           itemBuilder: (context, i) {
             return CheckboxListTile(
-                title: Text(_todoList[i]['title'],
-                    style: TextStyle(
-                        decoration: _todoList[i]['isChecked']
-                            ? TextDecoration.lineThrough
-                            : TextDecoration.none)),
+                title: GestureDetector(
+                  onTap: () async {
+                    await Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) {
+                        return DetailPage();
+                      },
+                    ));
+                  },
+                  child: Text(_todoList[i]['title'],
+                      style: TextStyle(
+                          decoration: _todoList[i]['isChecked']
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none)),
+                ),
                 value: _todoList[i]['isChecked'],
+                secondary: const Icon(
+                  Icons.star,
+                  color: Color.fromARGB(255, 255, 187, 0),
+                ),
+                controlAffinity: ListTileControlAffinity.leading,
                 onChanged: (value) {
                   setState(() {
                     _todoList[i]['isChecked'] = !_todoList[i]['isChecked'];

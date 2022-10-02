@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_app/components/parts/todo_input.dart';
 import 'package:flutter_mobile_app/components/parts/todo_item.dart';
-import 'package:flutter_mobile_app/detail_page.dart';
+import 'package:flutter_mobile_app/components/pages/detail_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -118,21 +119,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).viewInsets.bottom,
                     ),
-                    child: Row(children: [
-                      Flexible(
-                          child: TextField(
-                        decoration:
-                            const InputDecoration(border: InputBorder.none),
-                        onChanged: (String text) {
-                          _handleInput(text);
-                        },
-                      )),
-                      TextButton(
-                          onPressed: () {
-                            _addTodo(_text);
-                          },
-                          child: const Text('追加'))
-                    ]),
+                    child: TodoInput(
+                      handleInput: (e) {
+                        _handleInput(e);
+                      },
+                      handleAdd: () => _addTodo(_text),
+                    ),
                   );
                 })
           },

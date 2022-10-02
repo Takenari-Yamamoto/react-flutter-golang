@@ -66,9 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 title: GestureDetector(
                   onTap: () async {
                     await Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) {
-                        return DetailPage();
-                      },
+                      builder: (context) => DetailPage(_todoList[i]),
                     ));
                   },
                   child: Text(_todoList[i]['title'],

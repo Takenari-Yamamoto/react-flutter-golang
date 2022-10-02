@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DetailPage extends StatelessWidget {
+  const DetailPage(this.todoItem, {super.key});
+  final Map<String, dynamic> todoItem;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,20 +23,24 @@ class DetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('ラーメン食べる', style: TextStyle(fontSize: 24)),
+              Text(todoItem['title'], style: const TextStyle(fontSize: 24)),
               const SizedBox(
                 height: 12,
               ),
-              Row(children: const [
-                Icon(Icons.calendar_month_outlined),
-                Text('2022/10/02', style: TextStyle(fontSize: 16)),
+              Row(children: [
+                const Icon(Icons.calendar_month_outlined),
+                Text(
+                    DateFormat('yyyy/MM/dd(E) HH:mm')
+                        .format(todoItem['createdAt']),
+                    style: const TextStyle(fontSize: 16)),
               ]),
               const SizedBox(
                 height: 12,
               ),
-              Row(children: const [
-                Icon(Icons.details_outlined),
-                Text('今日は美味しいラーメンを食べますよ~', style: TextStyle(fontSize: 16)),
+              Row(children: [
+                const Icon(Icons.details_outlined),
+                Text(todoItem['detail'] ?? '',
+                    style: const TextStyle(fontSize: 16)),
               ])
             ],
           )),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_app/components/parts/todo_item.dart';
 import 'package:flutter_mobile_app/detail_page.dart';
 
 void main() {
@@ -63,39 +64,27 @@ class _MyHomePageState extends State<MyHomePage> {
         body: ListView.builder(
           itemCount: _todoList.length,
           itemBuilder: (context, i) {
-            return CheckboxListTile(
-                title: GestureDetector(
-                  onTap: () async {
-                    await Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => DetailPage(_todoList[i]),
-                    ));
-                  },
-                  child: Text(_todoList[i]['title'],
-                      style: TextStyle(
-                          decoration: _todoList[i]['isChecked']
-                              ? TextDecoration.lineThrough
-                              : TextDecoration.none)),
-                ),
-                value: _todoList[i]['isChecked'],
-                secondary: IconButton(
-                  onPressed: () => {
-                    setState(() {
-                      _todoList[i]['isFavorite'] = !_todoList[i]['isFavorite'];
-                    })
-                  },
-                  icon: const Icon(
-                    Icons.star,
-                  ),
-                  color: _todoList[i]['isFavorite']
-                      ? const Color.fromARGB(255, 255, 187, 0)
-                      : const Color.fromARGB(255, 198, 198, 198),
-                ),
-                controlAffinity: ListTileControlAffinity.leading,
-                onChanged: (value) {
-                  setState(() {
-                    _todoList[i]['isChecked'] = !_todoList[i]['isChecked'];
-                  });
-                });
+            return TodoItem(
+              id: _todoList[i]['id'],
+              title: _todoList[i]['title'],
+              isChecked: _todoList[i]['isChecked'],
+              isFavorite: _todoList[i]['isFavorite'],
+              onCheck: () => {
+                setState(() {
+                  _todoList[i]['isChecked'] = !_todoList[i]['isChecked'];
+                })
+              },
+              onClickText: () => {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => DetailPage(_todoList[i]),
+                ))
+              },
+              onChangeFavorite: () => {
+                setState(() {
+                  _todoList[i]['isFavorite'] = !_todoList[i]['isFavorite'];
+                })
+              },
+            );
           },
         ),
         bottomNavigationBar: BottomAppBar(

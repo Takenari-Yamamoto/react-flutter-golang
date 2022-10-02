@@ -45,7 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
         'id': 'id4524werwe',
         'title': e,
         'createdAt': DateTime.now(),
-        'isChecked': false
+        'isChecked': false,
+        'isFavorite': false
       });
     });
   }
@@ -76,9 +77,18 @@ class _MyHomePageState extends State<MyHomePage> {
                               : TextDecoration.none)),
                 ),
                 value: _todoList[i]['isChecked'],
-                secondary: const Icon(
-                  Icons.star,
-                  color: Color.fromARGB(255, 255, 187, 0),
+                secondary: IconButton(
+                  onPressed: () => {
+                    setState(() {
+                      _todoList[i]['isFavorite'] = !_todoList[i]['isFavorite'];
+                    })
+                  },
+                  icon: const Icon(
+                    Icons.star,
+                  ),
+                  color: _todoList[i]['isFavorite']
+                      ? const Color.fromARGB(255, 255, 187, 0)
+                      : const Color.fromARGB(255, 198, 198, 198),
                 ),
                 controlAffinity: ListTileControlAffinity.leading,
                 onChanged: (value) {

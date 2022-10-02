@@ -52,6 +52,24 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _handleCheck(int i) {
+    setState(() {
+      _todoList[i]['isChecked'] = !_todoList[i]['isChecked'];
+    });
+  }
+
+  void _moveToDetail(int i) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => DetailPage(_todoList[i]),
+    ));
+  }
+
+  void _clickFavorite(int i) {
+    setState(() {
+      _todoList[i]['isFavorite'] = !_todoList[i]['isFavorite'];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,21 +87,9 @@ class _MyHomePageState extends State<MyHomePage> {
               title: _todoList[i]['title'],
               isChecked: _todoList[i]['isChecked'],
               isFavorite: _todoList[i]['isFavorite'],
-              onCheck: () => {
-                setState(() {
-                  _todoList[i]['isChecked'] = !_todoList[i]['isChecked'];
-                })
-              },
-              onClickText: () => {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => DetailPage(_todoList[i]),
-                ))
-              },
-              onChangeFavorite: () => {
-                setState(() {
-                  _todoList[i]['isFavorite'] = !_todoList[i]['isFavorite'];
-                })
-              },
+              onCheck: () => _handleCheck(i),
+              onClickText: () => _moveToDetail(i),
+              onChangeFavorite: () => _clickFavorite(i),
             );
           },
         ),

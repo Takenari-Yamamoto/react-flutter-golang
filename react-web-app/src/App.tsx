@@ -1,24 +1,19 @@
 import React, { useState } from 'react';
+import Modal from './components/base/modal/Modal';
 import { MobilePage } from './components/page/MobilePage';
 import PcPage from './components/page/PcPage';
 import style from './styles/button.module.css';
 
 function App() {
-  const [screenType, setType] = useState<'pc' | 'mobile'>('mobile');
-  const changeType = (type: 'pc' | 'mobile') => {
-    if (type === 'pc') {
-      setType('mobile');
-      return;
-    }
-    setType('pc');
-  };
+  const [isOpenModal, showModal] = useState(false);
   return (
     <div className="App">
-      {screenType === 'pc' && <PcPage />}
-      {screenType === 'mobile' && <MobilePage />}
-      {/* <button className={style.button} onClick={() => changeType(screenType)}>
-        {screenType}
-      </button> */}
+      <button onClick={() => showModal(true)}>モーダル表示</button>
+      {isOpenModal && (
+        <Modal handleClose={() => showModal(false)}>
+          <p>モーダルAデス。Hogeほげ</p>
+        </Modal>
+      )}
     </div>
   );
 }

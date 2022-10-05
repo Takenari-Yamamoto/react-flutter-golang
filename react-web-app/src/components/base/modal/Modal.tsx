@@ -1,5 +1,6 @@
 import React, { memo, ReactNode, useEffect, useRef } from 'react';
 import { useClickOutside } from '../../../hooks/useClickOutside';
+import { useScrollLock } from '../../../hooks/useScrollLock';
 import style from './modal.module.css';
 
 type Props = {
@@ -15,6 +16,7 @@ const Modal = (props: Props) => {
     () => handleClose(),
     () => console.log('内側')
   );
+  useScrollLock();
 
   return (
     <div className={style.overlayContainer}>

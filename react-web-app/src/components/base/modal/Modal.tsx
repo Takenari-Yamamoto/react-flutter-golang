@@ -1,4 +1,5 @@
-import React, { memo, ReactNode } from 'react';
+import React, { memo, ReactNode, useEffect, useRef } from 'react';
+import { useClickOutside } from '../../../hooks/useClickOutside';
 import style from './modal.module.css';
 
 type Props = {
@@ -8,12 +9,12 @@ type Props = {
 
 const Modal = (props: Props) => {
   const { children, handleClose } = props;
-  // オーバーレイがクリックされたとき、
-  // もしくは閉じるボタンが押されたときに
-  // 閉じる処理
+  const modalRef = useRef<HTMLDivElement>(null);
+  useClickOutside(modalRef, () => handleClose());
+
   return (
     <div className={style.overlayContainer}>
-      <div className={style.modalContainer}>
+      <div ref={modalRef} className={style.modalContainer}>
         <div>{children}</div>
         <button onClick={handleClose}>閉じる！</button>
       </div>

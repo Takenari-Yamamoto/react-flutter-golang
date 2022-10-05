@@ -8,6 +8,7 @@ function App() {
   const [isOpenModal, showModal] = useState(false);
   return (
     <div className="App">
+      ああ
       <button onClick={() => showModal(true)}>モーダル表示</button>
       {isOpenModal && (
         <Modal handleClose={() => showModal(false)}>

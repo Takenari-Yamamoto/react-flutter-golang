@@ -10,7 +10,11 @@ type Props = {
 const Modal = (props: Props) => {
   const { children, handleClose } = props;
   const modalRef = useRef<HTMLDivElement>(null);
-  useClickOutside(modalRef, () => handleClose());
+  useClickOutside(
+    modalRef,
+    () => handleClose(),
+    () => console.log('内側')
+  );
 
   return (
     <div className={style.overlayContainer}>

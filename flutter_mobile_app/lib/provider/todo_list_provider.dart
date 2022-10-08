@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 @immutable
@@ -35,12 +36,18 @@ class Todo {
 class TodosNotifier extends StateNotifier<List<Todo>> {
   TodosNotifier() : super([]);
 
-  // title の入力
-  void handleInput(String e) {}
-
   // Todo の追加
-  void addTodo(String uuid, String title) {
-    state = [...state, Todo(id: uuid, title: title, createdAt: DateTime.now())];
+  void addTodo(String title) {
+    var uuid = const Uuid().v4();
+    state = [
+      Todo(
+          id: uuid,
+          title: title,
+          createdAt: DateTime.now(),
+          isChecked: false,
+          isFavorite: false),
+      ...state,
+    ];
   }
 
   // Todo の完了ステータスの変更

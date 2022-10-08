@@ -16,18 +16,22 @@ class TopPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Values
     List<Todo> todoList = ref.watch(todosProvider);
-    todoList.length;
-    final text = ref.watch(inputTextProvider);
+    String text = ref.read(inputTextProvider.notifier).state;
+    var todoMethod = ref.read(todosProvider.notifier);
 
     // Methods
-    void moveToDetail(int i) {
+    moveToDetail(int i) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => DetailPage(todoList[i]),
       ));
     }
 
     handleInput(String e) {
-      ref.read(inputTextProvider.notifier).state = e;
+      text = e;
+    }
+
+    addItem() {
+      todoMethod.addTodo(text);
     }
 
     return Scaffold(
@@ -79,7 +83,7 @@ class TopPage extends ConsumerWidget {
                       handleInput: (e) {
                         handleInput(e);
                       },
-                      handleAdd: () => {},
+                      handleAdd: () => {addItem()},
                     ),
                   );
                 })

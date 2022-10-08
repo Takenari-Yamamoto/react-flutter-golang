@@ -20,6 +20,7 @@ class TopPage extends ConsumerWidget {
     var todoMethod = ref.read(todosProvider.notifier);
 
     // Methods
+    // FIX: 以下の処理も provider に書けるやん
     moveToDetail(int i) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => DetailPage(todoList[i].id),

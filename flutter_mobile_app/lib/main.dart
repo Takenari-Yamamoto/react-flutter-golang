@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_mobile_app/components/pages/top_page.dart';
+import 'package:flutter_mobile_app/views/top_page.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));

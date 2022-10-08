@@ -4,16 +4,31 @@
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../provider/todo_list_provider.dart';
-import '../parts/todo_input.dart';
-import '../parts/todo_item.dart';
+import '../provider/todo_list_provider.dart';
+import '../components/todo_input.dart';
+import '../components/todo_item.dart';
+import 'detail_page.dart';
 
 class TopPage extends ConsumerWidget {
   const TopPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Values
     List<Todo> todoList = ref.watch(todosProvider);
+    todoList.length;
+    final text = ref.watch(inputTextProvider);
+
+    // Methods
+    void moveToDetail(int i) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => DetailPage(todoList[i]),
+      ));
+    }
+
+    handleInput(String e) {
+      ref.read(inputTextProvider.notifier).state = e;
+    }
 
     return Scaffold(
         appBar: AppBar(
@@ -30,7 +45,7 @@ class TopPage extends ConsumerWidget {
               isChecked: todoList[i].isChecked,
               isFavorite: todoList[i].isFavorite,
               onCheck: () => {},
-              onClickText: () => {},
+              onClickText: () => {moveToDetail(i)},
               onChangeFavorite: () => [],
             );
           },
@@ -61,7 +76,9 @@ class TopPage extends ConsumerWidget {
                       bottom: MediaQuery.of(context).viewInsets.bottom,
                     ),
                     child: TodoInput(
-                      handleInput: (e) {},
+                      handleInput: (e) {
+                        handleInput(e);
+                      },
                       handleAdd: () => {},
                     ),
                   );

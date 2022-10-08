@@ -7,8 +7,8 @@ class Todo {
       {required this.id,
       required this.title,
       required this.createdAt,
-      required this.isChecked,
-      required this.isFavorite});
+      this.isChecked = false,
+      this.isFavorite = false});
 
   final String id;
   final String title;
@@ -35,17 +35,12 @@ class Todo {
 class TodosNotifier extends StateNotifier<List<Todo>> {
   TodosNotifier() : super([]);
 
-  // Todo の追加
-  void addTodo(Todo todo) {
-    state = [...state, todo];
-  }
+  // title の入力
+  void handleInput(String e) {}
 
-  // Todo の削除
-  void removeTodo(String todoId) {
-    state = [
-      for (final todo in state)
-        if (todo.id != todoId) todo,
-    ];
+  // Todo の追加
+  void addTodo(String uuid, String title) {
+    state = [...state, Todo(id: uuid, title: title, createdAt: DateTime.now())];
   }
 
   // Todo の完了ステータスの変更
@@ -64,3 +59,4 @@ class TodosNotifier extends StateNotifier<List<Todo>> {
 final todosProvider = StateNotifierProvider<TodosNotifier, List<Todo>>((ref) {
   return TodosNotifier();
 });
+final inputTextProvider = StateProvider<String>((ref) => '');

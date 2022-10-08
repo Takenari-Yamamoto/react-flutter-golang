@@ -22,7 +22,7 @@ class TopPage extends ConsumerWidget {
     // Methods
     moveToDetail(int i) {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => DetailPage(todoList[i]),
+        builder: (context) => DetailPage(todoList[i].id),
       ));
     }
 

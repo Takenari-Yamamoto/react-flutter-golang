@@ -4,14 +4,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_app/provider/todo_list_provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class DetailPage extends StatelessWidget {
-  const DetailPage(this.todoItem, {super.key});
-  final Todo todoItem;
+class DetailPage extends ConsumerWidget {
+  const DetailPage(this.id, {super.key});
+  final String id;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    List<Todo> todoList = ref.watch(todosProvider);
+    Todo todoItem = todoList.firstWhere((todo) => todo.id == id);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

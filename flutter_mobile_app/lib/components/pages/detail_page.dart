@@ -1,3 +1,7 @@
+/*
+* Todo 詳細の閲覧 / 編集 / 削除
+*/
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

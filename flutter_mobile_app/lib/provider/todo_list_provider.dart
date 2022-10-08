@@ -60,8 +60,7 @@ class TodosNotifier extends StateNotifier<List<Todo>> {
   }
 }
 
-// 最後に TodosNotifier のインスタンスを値に持つ StateNotifierProvider を作成し、
-// UI 側から Todo リストを操作することを可能にします。
+// Provider の提供
 final todosProvider = StateNotifierProvider<TodosNotifier, List<Todo>>((ref) {
   return TodosNotifier();
 });

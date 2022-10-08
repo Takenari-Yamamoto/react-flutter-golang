@@ -28,7 +28,7 @@ class Todo {
       title: title ?? this.title,
       createdAt: createdAt ?? this.createdAt,
       isChecked: isChecked ?? this.isChecked,
-      isFavorite: isFavorite ?? this.isChecked,
+      isFavorite: isFavorite ?? this.isFavorite,
     );
   }
 }
@@ -51,11 +51,22 @@ class TodosNotifier extends StateNotifier<List<Todo>> {
   }
 
   // Todo の完了ステータスの変更
-  void toggle(String todoId) {
+  void check(String todoId) {
     state = [
       for (final todo in state)
         if (todo.id == todoId)
           todo.copyWith(isChecked: !todo.isChecked)
+        else
+          todo,
+    ];
+  }
+
+  // お気に入り登録
+  void registerFavorite(String todoId) {
+    state = [
+      for (final todo in state)
+        if (todo.id == todoId)
+          todo.copyWith(isFavorite: !todo.isFavorite)
         else
           todo,
     ];

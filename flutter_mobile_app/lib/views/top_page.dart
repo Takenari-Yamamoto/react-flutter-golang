@@ -34,6 +34,14 @@ class TopPage extends ConsumerWidget {
       todoMethod.addTodo(text);
     }
 
+    handleCheck(String id) {
+      todoMethod.check(id);
+    }
+
+    handleFavorite(String id) {
+      todoMethod.registerFavorite(id);
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: const Text("Todo App", style: TextStyle(color: Colors.black)),
@@ -48,9 +56,9 @@ class TopPage extends ConsumerWidget {
               title: todoList[i].title,
               isChecked: todoList[i].isChecked,
               isFavorite: todoList[i].isFavorite,
-              onCheck: () => {},
+              onCheck: () => {handleCheck(todoList[i].id)},
               onClickText: () => {moveToDetail(i)},
-              onChangeFavorite: () => [],
+              onChangeFavorite: () => [handleFavorite(todoList[i].id)],
             );
           },
         ),

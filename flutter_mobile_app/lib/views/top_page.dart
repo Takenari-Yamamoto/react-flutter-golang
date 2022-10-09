@@ -3,7 +3,6 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_app/repository/todo_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../provider/todo_list_provider.dart';
 import '../components/todo_input.dart';
@@ -18,21 +17,12 @@ class TopPage extends ConsumerWidget {
     // Values
     String text = ref.read(inputTextProvider.notifier).state;
     var todoMethod = ref.read(todosProvider.notifier);
-    List<TodoRepo> todoList = [];
-
-    Future<List<TodoRepo>> fetchAll() async {
-      print('FETCH ALL');
-      final res = await todoMethod.fetchAllTodos();
-      todoList = res ?? [];
-      print(todoList.length);
-      return res ?? [];
-    }
 
     // Methods
     // FIX: 以下の処理も provider に書けるやん
-    moveToDetail(int i) {
+    moveToDetail(String id) {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => const DetailPage('todoList[i].id'),
+        builder: (context) => DetailPage(id),
       ));
     }
 
@@ -42,7 +32,7 @@ class TopPage extends ConsumerWidget {
 
     addItem() async {
       await todoMethod.addTodo(text);
-      fetchAll();
+      setState(() {});
     }
 
     handleCheck(String id) {
@@ -60,7 +50,7 @@ class TopPage extends ConsumerWidget {
           backgroundColor: Colors.white,
         ),
         body: FutureBuilder(
-          future: fetchAll(),
+          future: todoMethod.fetchAllTodos(),
           builder: (ctx, data) {
             if (data.hasError) {
               return const Text('エラーが発生しました');
@@ -78,7 +68,7 @@ class TopPage extends ConsumerWidget {
                     isChecked: data.data?[i].isChecked ?? false,
                     isFavorite: data.data?[i].isFavorite ?? false,
                     onCheck: () => {handleCheck(data.data?[i].id ?? '')},
-                    onClickText: () => {moveToDetail(i)},
+                    onClickText: () => {moveToDetail(data.data?[i].id ?? '')},
                     onChangeFavorite: () =>
                         [handleFavorite(data.data?[i].id ?? '')],
                   );

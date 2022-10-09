@@ -4,12 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class TodoRepo {
   final String? id;
   final String? title;
-  final Timestamp? createdAt;
+  final Timestamp createdAt;
   final bool? isChecked;
   final bool? isFavorite;
 
   TodoRepo(
-      {this.id, this.title, this.createdAt, this.isChecked, this.isFavorite});
+      {this.id,
+      this.title,
+      required this.createdAt,
+      this.isChecked,
+      this.isFavorite});
 
   factory TodoRepo.fromFirestore(
       DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -40,9 +44,12 @@ class TodoRepository {
   final db = FirebaseFirestore.instance;
   // 全件取得
   Future<List<TodoRepo>> index() async {
-    final ref = db.collection('todo').withConverter<TodoRepo>(
-        fromFirestore: (snapshot, _) => TodoRepo.fromFirestore(snapshot, _),
-        toFirestore: (user, _) => user.toFirestore());
+    final ref = db
+        .collection('todo')
+        .orderBy("createdAt", descending: true)
+        .withConverter<TodoRepo>(
+            fromFirestore: (snapshot, _) => TodoRepo.fromFirestore(snapshot, _),
+            toFirestore: (user, _) => user.toFirestore());
 
     final snapshot = await ref.get();
     final todos = snapshot.docs

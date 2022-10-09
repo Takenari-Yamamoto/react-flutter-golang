@@ -44,10 +44,9 @@ class TodosNotifier extends StateNotifier<List<Todo>> {
   Future<List<TodoRepo>?> fetchAllTodos() async {
     try {
       final res = await todoRepo.index();
-      ;
       return res;
     } catch (e) {
-      print(e);
+      throw Error;
     }
   }
 
@@ -57,7 +56,7 @@ class TodosNotifier extends StateNotifier<List<Todo>> {
     try {
       await todoRepo.create(title, uuid);
     } catch (e) {
-      print(e);
+      throw Error;
     }
   }
 

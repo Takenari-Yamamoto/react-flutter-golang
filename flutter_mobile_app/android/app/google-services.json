@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "802289116887",
+    "project_id": "react-flutter-golang",
+    "storage_bucket": "react-flutter-golang.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802289116887:android:2aa145f9f25424cd407292",
+        "android_client_info": {
+          "package_name": "com.example.flutter_mobile_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "802289116887-8sseajq4mlnavnuv074gm1a56c51al03.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdSP0Wsk4DqaMBSY4tjkvUItqzUh-fU-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "802289116887-8sseajq4mlnavnuv074gm1a56c51al03.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

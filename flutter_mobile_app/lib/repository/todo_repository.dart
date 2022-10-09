@@ -2,12 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 // 参考: https://firebase.google.com/docs/firestore/query-data/get-data?hl=ja#custom_objects
 class TodoRepo {
+  final String? id;
   final String? title;
   final Timestamp? createdAt;
   final bool? isChecked;
   final bool? isFavorite;
 
-  TodoRepo({this.title, this.createdAt, this.isChecked, this.isFavorite});
+  TodoRepo(
+      {this.id, this.title, this.createdAt, this.isChecked, this.isFavorite});
 
   factory TodoRepo.fromFirestore(
       DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -15,6 +17,7 @@ class TodoRepo {
     final data = snapshot.data();
 
     return TodoRepo(
+      id: data?['id'],
       title: data?['title'],
       createdAt: data?['createdAt'],
       isChecked: data?['isChecked'],
@@ -60,8 +63,9 @@ class TodoRepository {
   }
 
   // 新規作成
-  create(String title) async {
-    await db.collection('todo').add({
+  Future<void> create(String title, String uuid) async {
+    await db.collection('todo').doc(uuid).set({
+      "id": uuid,
       "title": title,
       "createdAt": DateTime.now(),
       "isChecked": false,

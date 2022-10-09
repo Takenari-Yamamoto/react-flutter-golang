@@ -32,7 +32,6 @@ class TopPage extends ConsumerWidget {
 
     addItem() async {
       await todoMethod.addTodo(text);
-      setState(() {});
     }
 
     handleCheck(String id) {

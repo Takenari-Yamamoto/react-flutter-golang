@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../provider/todo_list_provider.dart';
 import '../components/todo_input.dart';
 import '../components/todo_item.dart';
+import '../repository/todo_repository.dart';
 import 'detail_page.dart';
 
 class TopPage extends ConsumerWidget {
@@ -15,7 +16,7 @@ class TopPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Values
-    List<Todo> todoList = ref.watch(todosProvider);
+    AsyncValue<List<TodoRepo>> todoList = ref.watch(todoListProvider);
     String text = ref.read(inputTextProvider.notifier).state;
     var todoMethod = ref.read(todosProvider.notifier);
 
@@ -23,7 +24,7 @@ class TopPage extends ConsumerWidget {
     // FIX: 以下の処理も provider に書けるやん
     moveToDetail(int i) {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => DetailPage(todoList[i].id),
+        builder: (context) => const DetailPage('todoList[i].id'),
       ));
     }
 
@@ -49,19 +50,27 @@ class TopPage extends ConsumerWidget {
           centerTitle: false,
           backgroundColor: Colors.white,
         ),
-        body: ListView.builder(
-          itemCount: todoList.length,
-          itemBuilder: (context, i) {
-            return TodoItem(
-              id: todoList[i].id,
-              title: todoList[i].title,
-              isChecked: todoList[i].isChecked,
-              isFavorite: todoList[i].isFavorite,
-              onCheck: () => {handleCheck(todoList[i].id)},
-              onClickText: () => {moveToDetail(i)},
-              onChangeFavorite: () => [handleFavorite(todoList[i].id)],
-            );
-          },
+        body: Container(
+          child: todoList.when(
+              error: (err, _) => Text(err.toString()),
+              loading: () => const CircularProgressIndicator(),
+              data: (todoList) {
+                return ListView.builder(
+                  itemCount: todoList.length,
+                  itemBuilder: (context, i) {
+                    return TodoItem(
+                      id: '',
+                      title: todoList[i].title ?? '',
+                      isChecked: todoList[i].isChecked ?? false,
+                      isFavorite: todoList[i].isFavorite ?? false,
+                      onCheck: () => {handleCheck('todoList[i].id')},
+                      onClickText: () => {moveToDetail(i)},
+                      onChangeFavorite: () =>
+                          [handleFavorite('todoList[i].id')],
+                    );
+                  },
+                );
+              }),
         ),
         bottomNavigationBar: BottomAppBar(
           color: Colors.white,

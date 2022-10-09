@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
+import 'package:flutter_mobile_app/repository/todo_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 @immutable
@@ -35,19 +35,24 @@ class Todo {
 
 class TodosNotifier extends StateNotifier<List<Todo>> {
   TodosNotifier() : super([]);
+  TodoRepository todoRepo = TodoRepository();
+
+  List<TodoRepo> todoList = [];
+
+  //初回に全件取得
+  Future<void> fetchAllTodos() async {
+    final res = await todoRepo.index();
+    todoList = res;
+  }
 
   // Todo の追加
-  void addTodo(String title) {
-    var uuid = const Uuid().v4();
-    state = [
-      Todo(
-          id: uuid,
-          title: title,
-          createdAt: DateTime.now(),
-          isChecked: false,
-          isFavorite: false),
-      ...state,
-    ];
+  Future<void> addTodo(String title) async {
+    try {
+      await todoRepo.create(title);
+      await todoRepo.index();
+    } catch (e) {
+      print(e);
+    }
   }
 
   // Todo の完了ステータスの変更
@@ -78,3 +83,8 @@ final todosProvider = StateNotifierProvider<TodosNotifier, List<Todo>>((ref) {
   return TodosNotifier();
 });
 final inputTextProvider = StateProvider<String>((ref) => '');
+final todoListProvider = FutureProvider((ref) async {
+  TodoRepository todoRepo = TodoRepository();
+  final res = await todoRepo.index();
+  return res;
+});

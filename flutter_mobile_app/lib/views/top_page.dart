@@ -58,18 +58,19 @@ class TopPage extends ConsumerWidget {
               return const CircularProgressIndicator();
             }
             if (data.hasData) {
+              final todoList = data.data;
               return ListView.builder(
-                itemCount: data.data?.length,
+                itemCount: todoList?.length,
                 itemBuilder: (context, i) {
                   return TodoItem(
-                    id: data.data?[i].id ?? '',
-                    title: data.data?[i].title ?? '',
-                    isChecked: data.data?[i].isChecked ?? false,
-                    isFavorite: data.data?[i].isFavorite ?? false,
-                    onCheck: () => {handleCheck(data.data?[i].id ?? '')},
-                    onClickText: () => {moveToDetail(data.data?[i].id ?? '')},
+                    id: todoList?[i].id ?? '',
+                    title: todoList?[i].title ?? '',
+                    isChecked: todoList?[i].isChecked ?? false,
+                    isFavorite: todoList?[i].isFavorite ?? false,
+                    onCheck: () => {handleCheck(todoList?[i].id ?? '')},
+                    onClickText: () => {moveToDetail(todoList?[i].id ?? '')},
                     onChangeFavorite: () =>
-                        [handleFavorite(data.data?[i].id ?? '')],
+                        [handleFavorite(todoList?[i].id ?? '')],
                   );
                 },
               );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
+import 'package:flutter_mobile_app/repository/todo_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:uuid/uuid.dart';
 
 @immutable
 class Todo {
@@ -35,23 +36,32 @@ class Todo {
 
 class TodosNotifier extends StateNotifier<List<Todo>> {
   TodosNotifier() : super([]);
+  TodoRepository todoRepo = TodoRepository();
+
+  // List<TodoRepo> todoList = [];
+
+  //初回に全件取得
+  Future<List<TodoRepo>?> fetchAllTodos() async {
+    try {
+      final res = await todoRepo.index();
+      return res;
+    } catch (e) {
+      throw Error;
+    }
+  }
 
   // Todo の追加
-  void addTodo(String title) {
+  Future<void> addTodo(String title) async {
     var uuid = const Uuid().v4();
-    state = [
-      Todo(
-          id: uuid,
-          title: title,
-          createdAt: DateTime.now(),
-          isChecked: false,
-          isFavorite: false),
-      ...state,
-    ];
+    try {
+      await todoRepo.create(title, uuid);
+    } catch (e) {
+      throw Error;
+    }
   }
 
   // Todo の完了ステータスの変更
-  void check(String todoId) {
+  check(String todoId) {
     state = [
       for (final todo in state)
         if (todo.id == todoId)
@@ -62,7 +72,7 @@ class TodosNotifier extends StateNotifier<List<Todo>> {
   }
 
   // お気に入り登録
-  void registerFavorite(String todoId) {
+  registerFavorite(String todoId) {
     state = [
       for (final todo in state)
         if (todo.id == todoId)

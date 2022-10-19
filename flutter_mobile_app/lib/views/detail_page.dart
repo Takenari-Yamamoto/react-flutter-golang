@@ -3,18 +3,17 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_app/provider/todo_list_provider.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_mobile_app/repository/todo_repository.dart';
+// import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class DetailPage extends ConsumerWidget {
+class DetailPage extends StatelessWidget {
   const DetailPage(this.id, {super.key});
   final String id;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    List<Todo> todoList = ref.watch(todosProvider);
-    Todo todoItem = todoList.firstWhere((todo) => todo.id == id);
+  Widget build(BuildContext context) {
+    TodoRepository todoRepo = TodoRepository();
 
     return Scaffold(
       appBar: AppBar(
@@ -27,31 +26,54 @@ class DetailPage extends ConsumerWidget {
         centerTitle: false,
         backgroundColor: Colors.white,
       ),
-      body: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(todoItem.title, style: const TextStyle(fontSize: 24)),
-              const SizedBox(
-                height: 12,
-              ),
-              Row(children: [
-                const Icon(Icons.calendar_month_outlined),
-                Text(
-                    DateFormat('yyyy/MM/dd(E) HH:mm')
-                        .format(todoItem.createdAt),
-                    style: const TextStyle(fontSize: 16)),
-              ]),
-              const SizedBox(
-                height: 12,
-              ),
-              Row(children: const [
-                Icon(Icons.details_outlined),
-                Text('detail comming soon', style: TextStyle(fontSize: 16)),
-              ])
-            ],
-          )),
+      body: FutureBuilder(
+          future: todoRepo.show(id),
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.hasError) {
+              return const Text('エラーが発生しました');
+            }
+            if (snapshot.hasData) {
+              return Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(snapshot.data?.title ?? '',
+                          style: const TextStyle(fontSize: 24)),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      // ignore: todo
+                      // TODO: 日付整形は共通化したい
+                      Row(children: [
+                        const Icon(Icons.calendar_month_outlined),
+                        Text(
+                            DateFormat('yyyy/MM/dd(E) HH:mm').format(
+                                snapshot.data?.createdAt != null
+                                    ? snapshot.data!.createdAt.toDate()
+                                    : DateTime.now()),
+                            style: const TextStyle(fontSize: 16)),
+                      ]),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Row(children: const [
+                        Icon(Icons.details_outlined),
+                        Text('detail comming soon',
+                            style: TextStyle(fontSize: 16)),
+                      ])
+                    ],
+                  ));
+            }
+            return const Center(
+              child: Text('読み込みに失敗しました'),
+            );
+          }),
     );
   }
 }

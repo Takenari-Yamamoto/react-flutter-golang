@@ -15,15 +15,14 @@ class TopPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Values
-    List<Todo> todoList = ref.watch(todosProvider);
     String text = ref.read(inputTextProvider.notifier).state;
     var todoMethod = ref.read(todosProvider.notifier);
 
     // Methods
     // FIX: 以下の処理も provider に書けるやん
-    moveToDetail(int i) {
+    moveToDetail(String id) {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => DetailPage(todoList[i].id),
+        builder: (context) => DetailPage(id),
       ));
     }
 
@@ -31,8 +30,8 @@ class TopPage extends ConsumerWidget {
       text = e;
     }
 
-    addItem() {
-      todoMethod.addTodo(text);
+    addItem() async {
+      await todoMethod.addTodo(text);
     }
 
     handleCheck(String id) {
@@ -49,18 +48,33 @@ class TopPage extends ConsumerWidget {
           centerTitle: false,
           backgroundColor: Colors.white,
         ),
-        body: ListView.builder(
-          itemCount: todoList.length,
-          itemBuilder: (context, i) {
-            return TodoItem(
-              id: todoList[i].id,
-              title: todoList[i].title,
-              isChecked: todoList[i].isChecked,
-              isFavorite: todoList[i].isFavorite,
-              onCheck: () => {handleCheck(todoList[i].id)},
-              onClickText: () => {moveToDetail(i)},
-              onChangeFavorite: () => [handleFavorite(todoList[i].id)],
-            );
+        body: FutureBuilder(
+          future: todoMethod.fetchAllTodos(),
+          builder: (ctx, data) {
+            if (data.hasError) {
+              return const Text('エラーが発生しました');
+            }
+            if (data.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            }
+            if (data.hasData) {
+              return ListView.builder(
+                itemCount: data.data?.length,
+                itemBuilder: (context, i) {
+                  return TodoItem(
+                    id: data.data?[i].id ?? '',
+                    title: data.data?[i].title ?? '',
+                    isChecked: data.data?[i].isChecked ?? false,
+                    isFavorite: data.data?[i].isFavorite ?? false,
+                    onCheck: () => {handleCheck(data.data?[i].id ?? '')},
+                    onClickText: () => {moveToDetail(data.data?[i].id ?? '')},
+                    onChangeFavorite: () =>
+                        [handleFavorite(data.data?[i].id ?? '')],
+                  );
+                },
+              );
+            }
+            return const Text('APIからデータの取得に失敗しました。再度試してください');
           },
         ),
         bottomNavigationBar: BottomAppBar(

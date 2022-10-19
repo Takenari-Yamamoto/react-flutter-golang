@@ -2,6 +2,7 @@
 * Todo の閲覧 / チェック / 追加 / 削除
 */
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../provider/todo_list_provider.dart';
@@ -42,40 +43,51 @@ class TopPage extends ConsumerWidget {
       todoMethod.registerFavorite(id);
     }
 
+    fetchByStream() {
+      var res = FirebaseFirestore.instance
+          .collection('todo')
+          .orderBy("createdAt", descending: true)
+          .snapshots();
+      return res;
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: const Text("Todo App", style: TextStyle(color: Colors.black)),
           centerTitle: false,
           backgroundColor: Colors.white,
         ),
-        body: FutureBuilder(
-          future: todoMethod.fetchAllTodos(),
-          builder: (ctx, data) {
-            if (data.hasError) {
-              return const Text('エラーが発生しました');
+        body: StreamBuilder(
+          stream: fetchByStream(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return const Text('Something went wrong');
             }
-            if (data.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Text("Loading");
             }
-            if (data.hasData) {
-              final todoList = data.data;
-              return ListView.builder(
-                itemCount: todoList?.length,
-                itemBuilder: (context, i) {
-                  return TodoItem(
-                    id: todoList?[i].id ?? '',
-                    title: todoList?[i].title ?? '',
-                    isChecked: todoList?[i].isChecked ?? false,
-                    isFavorite: todoList?[i].isFavorite ?? false,
-                    onCheck: () => {handleCheck(todoList?[i].id ?? '')},
-                    onClickText: () => {moveToDetail(todoList?[i].id ?? '')},
-                    onChangeFavorite: () =>
-                        [handleFavorite(todoList?[i].id ?? '')],
-                  );
-                },
-              );
-            }
-            return const Text('APIからデータの取得に失敗しました。再度試してください');
+
+            return ListView(
+              children: snapshot.data!.docs
+                  .map((DocumentSnapshot document) {
+                    Map<String, dynamic> data =
+                        document.data()! as Map<String, dynamic>;
+                    return TodoItem(
+                      id: data['id'] ?? '-',
+                      title: data['title'] ?? '-',
+                      isChecked: data['isChecked'] ?? false,
+                      isFavorite: data['isFavorite'] ?? false,
+                      onCheck: () => {handleCheck(data['id'] ?? '')},
+                      onClickText: () => {moveToDetail(data['id'] ?? '')},
+                      onChangeFavorite: () =>
+                          [handleFavorite(data['id'] ?? '')],
+                    );
+                  })
+                  .toList()
+                  .cast(),
+            );
           },
         ),
         bottomNavigationBar: BottomAppBar(

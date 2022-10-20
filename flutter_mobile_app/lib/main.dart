@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_app/model/todo_model.dart';
+import 'package:flutter_mobile_app/service/api_service.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -29,6 +34,23 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List items = [];
+  final client = ApiService();
+
+  Future<void> getData() async {
+    var response = await http
+        .get(Uri.https('https://jsonplaceholder.typicode.com', '/todos'));
+
+    print(response.body);
+
+    var jsonResponse = jsonDecode(response.body);
+    print(jsonResponse);
+
+    setState(() {
+      items = jsonResponse;
+    });
+  }
+
   int _counter = 0;
 
   void _incrementCounter() {
@@ -44,17 +66,25 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times123:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        child: FutureBuilder<List<TodoEntity?>>(
+          future: client.fetchAllTodos(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Text('エラーやけん');
+            }
+            if (snapshot.hasData) {
+              final todoList = snapshot.data;
+              return ListView.builder(
+                  itemCount: todoList?.length,
+                  itemBuilder: (context, i) {
+                    return Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Text('ID$i : ${todoList?[i]?.title}'),
+                    );
+                  });
+            }
+            return const Text('読み込み中');
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(
